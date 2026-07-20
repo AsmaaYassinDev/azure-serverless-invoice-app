@@ -31,6 +31,6 @@ jobs:
       - name: 'Build Azure Function Project'
         run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
 
-      # NEW STEP: Run the unit tests
+      # THE FIX: Point EXACTLY to the Unit Test project file, not the root folder
       - name: 'Run Unit Tests'
-        run: dotnet test ${{ env.PROJECT_PATH }} --configuration Release --no-build --verbosity normal
+        run: dotnet test ./InvoiceBackend.Tests/InvoiceBackend.Tests.csproj --configuration Release --no-build --verbosity normal
