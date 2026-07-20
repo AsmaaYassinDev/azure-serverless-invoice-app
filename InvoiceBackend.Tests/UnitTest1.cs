@@ -9,23 +9,20 @@ namespace InvoiceBackend.Tests;
 public class InvoiceServiceTests
 {
     private readonly Mock<IInvoiceRepository> _mockRepository;
-    private readonly Mock<IPdfGenerator> _mockPdfGenerator; // 1. Added the new Mock
+    private readonly Mock<IPdfGenerator> _mockPdfGenerator;
     private readonly InvoiceService _invoiceService;
 
     public InvoiceServiceTests()
     {
         _mockRepository = new Mock<IInvoiceRepository>();
-        _mockPdfGenerator = new Mock<IPdfGenerator>(); // 2. Initialized the new Mock
+        _mockPdfGenerator = new Mock<IPdfGenerator>();
 
-        // 3. Tell the mock to just return a fake byte array whenever it's asked to generate a PDF
         _mockPdfGenerator.Setup(x => x.GeneratePdfFromHtml(It.IsAny<string>()))
             .Returns(new byte[] { 1, 2, 3, 4, 5 });
 
-        // 4. Pass BOTH mocks into the service
         _invoiceService = new InvoiceService(_mockRepository.Object, _mockPdfGenerator.Object);
     }
 
-    // Test 1: ProcessAndGenerateInvoiceAsync saves invoice successfully
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_SavesInvoiceToRepository()
     {
@@ -33,8 +30,7 @@ public class InvoiceServiceTests
         var invoice = new InvoiceModel
         {
             CustomerName = "John Doe",
-            Description = "Test Invoice",
-            Amount = 100.00,
+            Description = "Test Invoice",          
             Items = new List<InvoiceItem>()
         };
 
@@ -50,7 +46,6 @@ public class InvoiceServiceTests
         Assert.NotEmpty(result);
     }
 
-    // Test 2: ProcessAndGenerateInvoiceAsync returns PDF bytes
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_ReturnsPdfBytes()
     {
@@ -59,7 +54,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Jane Smith",
             Description = "PDF Generation Test",
-            Amount = 250.50,
             Items = new List<InvoiceItem>()
         };
 
@@ -74,7 +68,6 @@ public class InvoiceServiceTests
         Assert.True(result.Length > 0, "PDF should contain data");
     }
 
-    // Test 3: ProcessAndGenerateInvoiceAsync handles invoice with multiple items
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_HandleMultipleItems()
     {
@@ -83,7 +76,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "ABC Corporation",
             Description = "Multiple Items Invoice",
-            Amount = 1000.00,
             Items = new List<InvoiceItem>
             {
                 new InvoiceItem { ItemName = "Item 1", Quantity = 5, Price = 100.00 },
@@ -104,7 +96,6 @@ public class InvoiceServiceTests
         _mockRepository.Verify(x => x.SaveInvoiceAsync(invoice), Times.Once);
     }
 
-    // Test 4: ProcessAndGenerateInvoiceAsync handles invoice with no items
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_HandleNoItems()
     {
@@ -113,7 +104,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Customer With No Items",
             Description = "Empty Items Invoice",
-            Amount = 500.00,
             Items = new List<InvoiceItem>()
         };
 
@@ -128,7 +118,6 @@ public class InvoiceServiceTests
         Assert.NotEmpty(result);
     }
 
-    // Test 5: ProcessAndGenerateInvoiceAsync calculates total correctly with items
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_CalculatesTotalCorrectly()
     {
@@ -137,7 +126,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Calculation Test",
             Description = "Testing Total Calculation",
-            Amount = 0,
             Items = new List<InvoiceItem>
             {
                 new InvoiceItem { ItemName = "Product A", Quantity = 10, Price = 25.00 },
@@ -156,7 +144,6 @@ public class InvoiceServiceTests
         Assert.True(result.Length > 0);
     }
 
-    // Test 6: ProcessAndGenerateInvoiceAsync calls repository exactly once
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_CallsRepositoryExactlyOnce()
     {
@@ -165,7 +152,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Repository Call Test",
             Description = "Testing Repository Invocation",
-            Amount = 300.00,
             Items = new List<InvoiceItem>()
         };
 
@@ -179,7 +165,6 @@ public class InvoiceServiceTests
         _mockRepository.Verify(x => x.SaveInvoiceAsync(It.IsAny<InvoiceModel>()), Times.Exactly(1));
     }
 
-    // Test 7: ProcessAndGenerateInvoiceAsync handles special characters in customer name
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_HandleSpecialCharacters()
     {
@@ -188,7 +173,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "John & Jane O'Brien-Smith",
             Description = "Special <Characters> & Test",
-            Amount = 150.75,
             Items = new List<InvoiceItem>
             {
                 new InvoiceItem { ItemName = "Item <Special>", Quantity = 1, Price = 150.75 }
@@ -206,7 +190,6 @@ public class InvoiceServiceTests
         Assert.NotEmpty(result);
     }
 
-    // Test 8: ProcessAndGenerateInvoiceAsync handles large amounts
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_HandleLargeAmounts()
     {
@@ -215,7 +198,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Enterprise Customer",
             Description = "Large Invoice Amount",
-            Amount = 9999999.99,
             Items = new List<InvoiceItem>
             {
                 new InvoiceItem { ItemName = "Premium Service", Quantity = 1000, Price = 9999.99 }
@@ -233,7 +215,6 @@ public class InvoiceServiceTests
         Assert.NotEmpty(result);
     }
 
-    // Test 9: ProcessAndGenerateInvoiceAsync handles repository exception gracefully
     [Fact]
     public async Task ProcessAndGenerateInvoiceAsync_RepositoryThrowsException()
     {
@@ -242,7 +223,6 @@ public class InvoiceServiceTests
         {
             CustomerName = "Exception Test",
             Description = "Testing Exception Handling",
-            Amount = 200.00,
             Items = new List<InvoiceItem>()
         };
 

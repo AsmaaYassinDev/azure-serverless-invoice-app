@@ -19,12 +19,30 @@ namespace InvoiceBackend
         public async Task SaveInvoiceAsync(InvoiceModel invoice)
         {
             // Ensure your InvoiceModel has a lowercase "id" property populated
-            if (string.IsNullOrEmpty(invoice.id))
+            if (string.IsNullOrEmpty(invoice.Id))
             {
-                invoice.id = Guid.NewGuid().ToString();
+                invoice.Id = Guid.NewGuid().ToString();
             }
 
-            await _container.CreateItemAsync(invoice, new PartitionKey(invoice.id));
+            await _container.CreateItemAsync(invoice, new PartitionKey(invoice.Id));
+        }
+        public async Task<InvoiceModel> GetInvoiceByIdAsync(string id)
+        {
+            try
+            {
+                // _container is your Cosmos DB container variable created in the repository constructor
+                var response = await _container.ReadItemAsync<InvoiceModel>(
+                    id: id,
+                    partitionKey: new PartitionKey(id)
+                );
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                // If it doesn't exist, gracefully return null instead of crashing
+                return null;
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ var host = new HostBuilder()
         // Register your application services
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IInvoiceService, InvoiceService>();
+        services.AddScoped<IPdfGenerator, IronPdfGenerator>();
     })
     .Build();
 

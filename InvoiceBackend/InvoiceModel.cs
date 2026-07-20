@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 namespace InvoiceBackend
 {
     public class InvoiceModel
     {
-        [JsonPropertyName("id")]
-        public string id { get; set; } = Guid.NewGuid().ToString();
+        [JsonProperty("id")]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
         public string CustomerName { get; set; } = string.Empty;
+
         public string Description { get; set; } = string.Empty;
-        public double Amount { get; set; }
+
+        // This will now automatically calculate the total every time!
+        public double Amount => Items.Sum(item => item.Price * item.Quantity);
+
         public List<InvoiceItem> Items { get; set; } = new List<InvoiceItem>();
     }
 
