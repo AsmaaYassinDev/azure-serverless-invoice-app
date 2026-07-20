@@ -1,0 +1,45 @@
+name: Build, Test, and Deploy Azure Function
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_NAME: 'invoice-backend-app' # Make sure this matches your Azure portal!
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: '.'
+
+jobs:
+  build-test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: 'Setup DotNet Environment'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Restore Dependencies'
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: 'Build Project'
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      # THE QUALITY GATE: Tests must pass before it is allowed to deploy!
+      - name: 'Run Unit Tests'
+        run: dotnet test ${{ env.PROJECT_PATH }} --configuration Release --no-build --verbosity normal
+
+      # Only runs if the tests above get green checkmarks
+      - name: 'Publish Project artifacts'
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ./output --no-build
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: ./output
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}

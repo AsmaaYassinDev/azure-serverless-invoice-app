@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="InvoiceBackend.Tests/InvoiceBackend.Tests.csproj" />
+  <Project Path="InvoiceBackend/InvoiceBackend.csproj" />
+</Solution>
