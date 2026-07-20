@@ -9,6 +9,7 @@ An Azure Functions backend designed to handle invoice creation, database persist
 * **Document Generation:** Generates invoice PDFs directly from incoming JSON payloads.
 * **CI/CD Verification:** Includes a pre-configured GitHub Actions pipeline (`azure-function-build.yml`) that automatically restores and builds the application on every push.
 * **ASP.NET Core Integration:** Uses standard `HttpRequest` and `IActionResult` interfaces for unified, clean endpoint controllers.
+* ** Automated Unit Testing & CI/CD::**  Fully covered by a comprehensive suite of xUnit and Moq unit tests, integrated into a GitHub Actions pipeline that enforces a quality gate before deploying to Azure.
 
 ## Tech Stack & Architecture
 
