@@ -32,7 +32,7 @@ namespace InvoiceBackend.IntegrationTests
 
             var newInvoice = new InvoiceModel
             {
-                Id = "Test-12345",
+                Id = "Test"+ Guid.NewGuid().ToString(),
                 CustomerName = "Integration Test Corp",
                 Description = "Testing the live database connection",
 
