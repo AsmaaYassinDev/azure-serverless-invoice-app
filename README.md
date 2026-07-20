@@ -9,7 +9,7 @@ An Azure Functions backend designed to handle invoice creation, database persist
 * **Document Generation:** Generates invoice PDFs directly from incoming JSON payloads.
 * **CI/CD Verification:** Includes a pre-configured GitHub Actions pipeline (`azure-function-build.yml`) that automatically restores and builds the application on every push.
 * **ASP.NET Core Integration:** Uses standard `HttpRequest` and `IActionResult` interfaces for unified, clean endpoint controllers.
-* **Automated Unit Testing & CI/CD:**  Fully covered by a comprehensive suite of xUnit and Moq unit tests, integrated into a GitHub Actions pipeline that enforces a quality gate before deploying to Azure.
+* **Automated Unit Testing & CI/CD:** Fully covered by a comprehensive suite of xUnit and Moq unit tests, integrated into a GitHub Actions pipeline that enforces a quality gate before deploying to Azure.
 
 ## Tech Stack & Architecture
 
@@ -19,12 +19,13 @@ An Azure Functions backend designed to handle invoice creation, database persist
 * **CI/CD:** GitHub Actions Automation
 
 ### Project Layout
+
 ```text
 ├── .github/workflows/      # Automated Build Pipelines
 ├── assets/                 # Documentation Images & Screenshots
 ├── GenerateInvoice.cs      # HTTP Trigger (API Controller Endpoint)
 ├── IInvoiceRepository.cs   # Data Layer Abstraction
-├── InvoiceRepository.cs     # Cosmos DB Implementation
+├── InvoiceRepository.cs    # Cosmos DB Implementation
 ├── IInvoiceService.cs      # Business Logic Abstraction
 ├── InvoiceService.cs       # Document Processing Engine
 ├── InvoiceModel.cs         # Core Data Contracts (DTO)
@@ -51,6 +52,17 @@ For zero-cost local development and rapid integration testing, this project uses
 
 When an execution request hits the API endpoint, the application automatically handles structural serialisation and maps incoming records smoothly directly into the local collection database documents.
 ![Cosmos DB Local Emulator Document Verification](./assets/emulator-setup.png)
+
+### Integration Testing & CI/CD Security
+This project includes a dedicated integration testing suite (`InvoiceBackend.IntegrationTests`) designed to verify real-world connectivity and data persistence with Azure Cosmos DB. 
+
+**Running Tests Locally:**
+When running locally, the integration tests connect seamlessly to the Azure Cosmos DB Emulator. Ensure the emulator is running before executing `dotnet test`.
+
+**CI/CD Pipeline Considerations:**
+To protect sensitive cloud credentials, the GitHub Actions pipeline (`azure-functions-deploy.yml`) is engineered to dynamically inject the database connection string at runtime:
+* **Unit Tests (Quality Gate 1):** Run automatically on every push, requiring no database connection.
+* **Integration Tests (Quality Gate 2):** Require a valid Cosmos DB connection string stored in GitHub Secrets (`COSMOS_DB_TEST_CONNECTION`). The pipeline uses a secure Linux `echo` command to build a temporary `appsettings.json` file, runs the tests against a live cloud test-database, and then completely destroys the virtual environment to prevent secret leakage.
 
 ### **API Contract (POST)
 -Endpoint: POST /api/invoice/generate
