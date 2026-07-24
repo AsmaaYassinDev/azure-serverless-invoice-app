@@ -50,11 +50,13 @@ Built with .NET 8 Azure Functions (Isolated Worker Model) for the backend and An
 └── InvoiceBackend.Tests/       # Automated Unit Testing Suite
 ```
 
-### **Local Configuration**
-To run the project locally, create a local.settings.json file inside the Azure Functions project directory.
+## Local Configuration
 
-This file is excluded through .gitignore to prevent sensitive configuration values from being committed.
+To run the project locally, create a `local.settings.json` file inside the Azure Functions project directory.
 
+This file is excluded through `.gitignore` to prevent sensitive configuration values from being committed.
+
+```json
 {
   "IsEncrypted": false,
   "Values": {
@@ -63,6 +65,7 @@ This file is excluded through .gitignore to prevent sensitive configuration valu
     "CosmosDBConnectionString": "AccountEndpoint=https://your-local-or-live-cosmos;"
   }
 }
+```
 
 ### **Database Verification & Testing**
 For zero-cost local development and rapid integration testing, this project uses the Azure Cosmos DB Emulator. Data structural validation is performed inside a container matching the following layout:
@@ -84,10 +87,23 @@ To protect sensitive cloud credentials, the GitHub Actions pipeline (`azure-func
 * **Unit Tests (Quality Gate 1):** Run automatically on every push, requiring no database connection.
 * **Integration Tests (Quality Gate 2):** Require a valid Cosmos DB connection string stored in GitHub Secrets (`COSMOS_DB_TEST_CONNECTION`). The pipeline uses a secure Linux `echo` command to build a temporary `appsettings.json` file, runs the tests against a live cloud test-database, and then completely destroys the virtual environment to prevent secret leakage.
 
-### **API Contract (POST)
--Endpoint: POST /api/invoice/generate
--Headers: Content-Type: application/json
--Request Body:
+## API Contract (POST)
+
+### Endpoint
+
+```http
+POST /api/invoice/generate
+```
+
+### Headers
+
+```http
+Content-Type: application/json
+```
+
+### Request Body
+
+```json
 {
   "CustomerName": "John Doe",
   "Description": "Project Development Services",
@@ -105,6 +121,7 @@ To protect sensitive cloud credentials, the GitHub Actions pipeline (`azure-func
     }
   ]
 }
+```
 
 ### **Response
 Success (200 OK): Returns a raw binary file streaming response (application/pdf) prompting a direct download named Invoice_John_Doe.pdf.
