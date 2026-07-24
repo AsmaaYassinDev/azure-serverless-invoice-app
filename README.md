@@ -51,7 +51,10 @@ Built with .NET 8 Azure Functions (Isolated Worker Model) for the backend and An
 ```
 
 ### **Local Configuration**
-To run the project locally, create a local.settings.json file in the root directory. This file is tracked by .gitignore to prevent secret leaks:
+To run the project locally, create a local.settings.json file inside the Azure Functions project directory.
+
+This file is excluded through .gitignore to prevent sensitive configuration values from being committed.
+
 {
   "IsEncrypted": false,
   "Values": {
