@@ -1,19 +1,20 @@
-# Azure Serverless Invoice Processing API (.NET 8)
+# Azure Serverless Full-Stack Invoice Processing System (.NET 8 & Angular)
 
-An Azure Functions backend designed to handle invoice creation, database persistence, and PDF generation. This project is built using .NET 8 (Isolated Worker Model) and is structured around Clean Architecture principles.
+A lightweight personal project designed to handle dynamic invoice creation, NoSQL database persistence, automated PDF generation, and a modern SaaS user interface.Built using .NET 8 (Isolated Worker Model) for the backend and Angular v22 for the frontend, following Clean Architecture principles.
 
 ## Key Features
 
-* **Serverless Architecture:** Utilizes Azure Functions (v4) with .NET 8 Isolated Worker Process for independent scaling and performance.
-* **NoSQL Database Persistence:** Uses Azure Cosmos DB for reliable, schema-agnostic storage.
-* **Document Generation:** Generates invoice PDFs directly from incoming JSON payloads.
-* **CI/CD Verification:** Includes a pre-configured GitHub Actions pipeline (`azure-function-build.yml`) that automatically restores and builds the application on every push.
-* **ASP.NET Core Integration:** Uses standard `HttpRequest` and `IActionResult` interfaces for unified, clean endpoint controllers.
-* **Automated Unit Testing & CI/CD:** Fully covered by a comprehensive suite of xUnit and Moq unit tests, integrated into a GitHub Actions pipeline that enforces a quality gate before deploying to Azure.
+* **Modern SaaS Frontend:** Built with Angular featuring a high-end gradient design, reactive `FormArray` for dynamic line items, and real-time input validations.
+* **Serverless Architecture:** Utilises Azure Functions (v4) with a .NET 8 Isolated Worker Process for independent scaling, security, and performance.
+* **NoSQL Database Persistence:** Uses Azure Cosmos DB for reliable, schema-agnostic storage of invoice records.
+* **Dynamic Document Generation:** Transforms complex JSON payloads into beautifully styled, downloadable PDF invoices via server-side rendering.
+* **Parallel Full-Stack CI Pipeline:** Powered by a pre-configured GitHub Actions workflow (`CI - Full Stack Azure Function .NET 8 & Angular Build & Test`) that simultaneously validates, restores, and builds both the .NET backend and the Angular frontend on every push.
+* **Automated Testing:** Fully covered by a comprehensive suite of xUnit and Moq unit tests, serving as an automated quality gate before production deployment.
 
 ## Tech Stack & Architecture
 
-* **Framework:** .NET 8.0 (Isolated Worker)
+* **Backend Framework:** .NET 8.0 (Isolated Worker)
+* **Frontend Framework:** Angular v22 (Reactive Forms, SaaS UI)
 * **Database:** Azure Cosmos DB (Extension v4, version 4.11.0)
 * **Design Patterns:** Dependency Injection (DI), Repository Pattern, Interface Segregation.
 * **CI/CD:** GitHub Actions Automation
