@@ -74,7 +74,7 @@ For zero-cost local development and rapid integration testing, this project uses
 -Partition Key: /id
 
 When an execution request hits the API endpoint, the application automatically handles structural serialisation and maps incoming records smoothly directly into the local collection database documents.
-![Cosmos DB Local Emulator Document Verification](assets/emulator-setup.png)
+![Cosmos DB Local Emulator Document Verification](./InvoiceBackend/assets/emulator-setup.png)
 
 ### Integration Testing & CI/CD Security
 This project includes a dedicated integration testing suite (`InvoiceBackend.IntegrationTests`) designed to verify real-world connectivity and data persistence with Azure Cosmos DB. 
