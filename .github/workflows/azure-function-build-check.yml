@@ -1,4 +1,4 @@
-name: Azure Function .NET 8 Build & Test Verification
+name: CI - Full Stack Azure Function .NET 8 & Angular Build & Test
 
 on:
   push:
@@ -14,7 +14,10 @@ env:
   PROJECT_PATH: '.'
 
 jobs:
-  build-and-test:
+  # ---------------------------------------------
+  # JOB 1: Build and Test the C# Backend
+  # ---------------------------------------------
+  build-and-test-backend:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout Code'
@@ -31,6 +34,27 @@ jobs:
       - name: 'Build Azure Function Project'
         run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
 
-      # THE FIX: Point EXACTLY to the Unit Test project file, not the root folder
       - name: 'Run Unit Tests'
         run: dotnet test ./InvoiceBackend.Tests/InvoiceBackend.Tests.csproj --configuration Release --no-build --verbosity normal
+
+  # ---------------------------------------------
+  # JOB 2: Build the Angular Frontend
+  # ---------------------------------------------
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' 
+
+      - name: 'Install NPM Packages'
+        working-directory: ./invoice-generator
+        run: npm install
+
+      - name: 'Build Angular Application'
+        working-directory: ./invoice-generator
+        run: npm run build
