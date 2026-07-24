@@ -1,0 +1,62 @@
+<div class="invoice-container">
+  <h2>Generate New Invoice</h2>
+
+  <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-section">
+      <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input id="customerName" type="text" formControlName="customerName" placeholder="e.g., Acme Corp">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input id="description" type="text" formControlName="description" placeholder="e.g., Q3 Web Development">
+      </div>
+    </div>
+
+    <div class="items-section">
+      <h3>Line Items</h3>
+      <div formArrayName="items">
+        
+        @for (item of items.controls; track $index) {
+          <div [formGroupName]="$index" class="item-row">
+            
+            <div class="form-group item-name">
+              <label>Service / Item</label>
+              <input type="text" formControlName="itemName" placeholder="e.g., API Integration">
+            </div>
+
+            <div class="form-group item-qty">
+              <label>Qty</label>
+              <input type="number" formControlName="quantity" min="1">
+            </div>
+
+            <div class="form-group item-price">
+              <label>Price</label>
+              <input type="number" formControlName="price" min="0" step="0.01">
+            </div>
+
+            @if (items.length > 1) {
+              <button type="button" class="btn-remove" (click)="removeItem($index)">X</button>
+            }
+          </div>
+        }
+      </div>
+
+      <button type="button" class="btn-add" (click)="addItem()">+ Add Another Item</button>
+    </div>
+
+    <hr>
+    <div class="form-actions">
+      <button type="button" class="btn-clear" (click)="onClear()">
+        Clear Form
+      </button>
+      
+      <button type="submit" class="btn-submit" [disabled]="invoiceForm.invalid">
+        Generate PDF
+      </button>
+    </div>
+
+  </form>
+</div>
