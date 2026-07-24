@@ -21,16 +21,19 @@ An Azure Functions backend designed to handle invoice creation, database persist
 ### Project Layout
 
 ```text
-├── .github/workflows/      # Automated Build Pipelines
+├── .github/workflows/      # Automated CI Build & Test Pipelines
 ├── assets/                 # Documentation Images & Screenshots
-├── GenerateInvoice.cs      # HTTP Trigger (API Controller Endpoint)
-├── IInvoiceRepository.cs   # Data Layer Abstraction
-├── InvoiceRepository.cs    # Cosmos DB Implementation
-├── IInvoiceService.cs      # Business Logic Abstraction
-├── InvoiceService.cs       # Document Processing Engine
-├── InvoiceModel.cs         # Core Data Contracts (DTO)
-├── Program.cs              # Dependency Injection & Bootstrapper
-└── host.json               # Serverless Environment Meta
+├── invoice-generator/      # Angular v22 Modern SaaS Frontend UI
+├── InvoiceBackend/         # C# .NET 8 Serverless Function App
+│   ├── GenerateInvoice.cs  # HTTP Trigger (API Controller Endpoint)
+│   ├── IInvoiceRepository.cs# Data Layer Abstraction
+│   ├── InvoiceRepository.cs# Cosmos DB Implementation
+│   ├── IInvoiceService.cs  # Business Logic Abstraction
+│   ├── InvoiceService.cs   # Document Processing Engine & IronPDF
+│   ├── InvoiceModel.cs     # Core Data Contracts (DTO)
+│   ├── Program.cs          # Dependency Injection & Bootstrapper
+│   └── host.json           # Serverless Environment Meta
+└── InvoiceBackend.Tests/   # Automated Unit Testing Suite
 ```
 
 ### **Local Configuration**
