@@ -35,19 +35,20 @@ Built with .NET 8 Azure Functions (Isolated Worker Model) for the backend and An
 ## Project Layout
 
 ```text
-├── .github/workflows/          # Automated CI Build & Test Pipelines
-├── assets/                     # Documentation Images & Screenshots
-├── invoice-generator/          # Angular 22 Frontend Application
-├── InvoiceBackend/             # .NET 8 Azure Functions Application
-│   ├── GenerateInvoice.cs      # HTTP Trigger API Endpoint
-│   ├── IInvoiceRepository.cs   # Repository Abstraction
-│   ├── InvoiceRepository.cs    # Cosmos DB Repository Implementation
-│   ├── IInvoiceService.cs      # Business Logic Abstraction
-│   ├── InvoiceService.cs       # Invoice Processing & PDF Generation
-│   ├── InvoiceModel.cs         # Invoice Data Model / DTO
-│   ├── Program.cs              # Dependency Injection Configuration
-│   └── host.json               # Azure Functions Configuration
-└── InvoiceBackend.Tests/       # Automated Unit Testing Suite
+├── .github/workflows/              # Automated CI Build & Test Pipelines
+├── invoice-generator/              # Angular 22 Frontend Application
+├── InvoiceBackend/                 # .NET 8 Azure Functions Application
+│   ├── assets/                     # Documentation Images & Screenshots
+│   │   └── emulator-setup.png      # Cosmos DB Emulator Screenshot
+│   ├── GenerateInvoice.cs          # HTTP Trigger API Endpoint
+│   ├── IInvoiceRepository.cs       # Repository Abstraction
+│   ├── InvoiceRepository.cs        # Cosmos DB Repository Implementation
+│   ├── IInvoiceService.cs          # Business Logic Abstraction
+│   ├── InvoiceService.cs           # Invoice Processing & PDF Generation
+│   ├── InvoiceModel.cs             # Invoice Data Model / DTO
+│   ├── Program.cs                  # Dependency Injection Configuration
+│   └── host.json                   # Azure Functions Configuration
+└── InvoiceBackend.Tests/           # Automated Unit Testing Suite
 ```
 
 ## Local Configuration
